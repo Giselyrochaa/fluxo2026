@@ -1,16 +1,179 @@
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Evereste - Gestão de Crises</title>
-    <!-- Importando Tailwind via CDN para simplificar o setup sem build complexo, 
-         embora em produção o ideal seja via PostCSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxograma Interativo - Gestão de Eventos (Paisagem)</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #003366;
+            --secondary: #00A3AD;
+            --bg: #f4f7f9;
+            --white: #ffffff;
+            --text: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        h1 { margin: 0; font-size: 1.8rem; text-transform: uppercase; letter-spacing: 2px; }
+        p.subtitle { margin-top: 5px; opacity: 0.8; font-size: 0.9rem; }
+
+        .container {
+            width: 98%;
+            max-width: 1400px;
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            overflow-x: auto; /* Permite scroll horizontal se o fluxo for muito largo */
+            margin-bottom: 3rem;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: flex-start; /* Alinha à esquerda para facilitar leitura horizontal */
+            min-width: 1000px; /* Garante que não fique demasiado espremido */
+        }
+
+        .legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: 8px;
+        }
+
+        /* Estilização das cores do Mermaid via CSS */
+        .node rect { stroke-width: 2px !important; }
+        
+        @media print {
+            body { background-color: white; }
+            .container { box-shadow: none; border: none; width: 100%; max-width: none; }
+            header { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Procedimentos de Gestão de Eventos</h1>
+    <p class="subtitle">Modelo Operacional em Orientação Paisagem (Horizontal)</p>
+</header>
+
+<div class="container">
+    <div class="mermaid">
+        graph LR
+            %% Mudança para LR (Left to Right) - Orientação Paisagem
+            
+            %% Estilos Gerais
+            classDef pre fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b;
+            classDef impl fill:#e0f2f1,stroke:#004d40,stroke-width:2px,color:#004d40;
+            classDef exec fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100;
+            classDef pos fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c;
+            classDef decision fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:#333;
+
+            Start((<b>INÍCIO</b>)) --> PRE[<b>4.1 PRÉ-EVENTO</b>]
+            
+            subgraph FASE_PRE [PLANEJAMENTO]
+                PRE --> B[Elaborar Briefing]
+                B --> C[Definir Cronograma]
+                C --> D[Planejamento Geral]
+                D --> E[Roteiro & Checklist]
+                E --> F[Reunião Setorial]
+            end
+
+            F --> IMP[<b>4.2 IMPLEMENTAÇÃO</b>]
+            
+            subgraph FASE_IMP [LOGÍSTICA]
+                IMP --> G[Revisão Técnica]
+                G --> H[Organização Espaço]
+                H --> I{Validar Data?}
+            end
+
+            I -->|Sim| EXE[<b>4.3 EXECUÇÃO</b>]
+            
+            subgraph FASE_EXE [OPERAÇÃO]
+                EXE --> J[Alinhamento Equipe]
+                J --> K[Confirmar Palestrante]
+                K --> L[Apoio TI/MKT]
+                L --> M[<b>DIA DO EVENTO</b>]
+                M --> N[Recepção/Presença]
+                N --> O[Cerimonial]
+                O --> P[Finalização]
+            end
+
+            P --> POS[<b>4.4 PÓS-EVENTO</b>]
+            
+            subgraph FASE_POS [AVALIAÇÃO]
+                POS --> Q[Satisfação]
+                Q --> R[Listas]
+                R --> S[Feedback]
+                S --> T[Ata/Registro]
+            end
+
+            T --> End((<b>FIM</b>))
+
+            %% Aplicação de Classes
+            class PRE,B,C,D,E,F pre;
+            class IMP,G,H,I impl;
+            class EXE,J,K,L,M,N,O,P exec;
+            class POS,Q,R,S,T pos;
+            class I decision;
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="dot" style="background-color: #e1f5fe; border: 1px solid #01579b;"></div> 4.1 Pré-Evento</div>
+        <div class="legend-item"><div class="dot" style="background-color: #e0f2f1; border: 1px solid #004d40;"></div> 4.2 Implementação</div>
+        <div class="legend-item"><div class="dot" style="background-color: #fff3e0; border: 1px solid #e65100;"></div> 4.3 Execução</div>
+        <div class="legend-item"><div class="dot" style="background-color: #f3e5f5; border: 1px solid #4a148c;"></div> 4.4 Pós-Evento</div>
+    </div>
+</div>
+
+<script>
+    mermaid.initialize({ 
+        startOnLoad: true,
+        theme: 'neutral',
+        flowchart: { 
+            useMaxWidth: false, /* Desativado para manter legibilidade em modo paisagem */
+            htmlLabels: true, 
+            curve: 'basis' 
+        }
+    });
+</script>
+
+</body>
 </html>
